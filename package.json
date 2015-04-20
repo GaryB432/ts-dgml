@@ -1,0 +1,42 @@
+{
+  "name": "ts-dgml",
+  "version": "1.0.0",
+  "description": "Directed Graph Markup Language",
+  "main": "dgml.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GaryB432/ts-dgml.git"
+  },
+  "keywords": [
+    "simple",
+    "dgml",
+    "builder",
+    "converter",
+    "typescript"
+  ],
+  "author": {
+    "name": "Gary Bortosky",
+    "url": "https://github.com/GaryB432"
+  },
+  "maintainers": [
+    {
+      "name": "Gary Bortosky",
+      "email": "gary@bortosky.com"
+    }
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GaryB432/ts-dgml/issues"
+  },
+  "homepage": "https://github.com/GaryB432/ts-dgml",
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "mocha": "^2.2.4"
+  },
+  "dependencies": {
+    "xml": "^1.0.0"
+  }
+}
