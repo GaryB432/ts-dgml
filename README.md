@@ -9,11 +9,11 @@ $ npm install ts-dgml
 
 ## API
 ```js
-var graph = new Dgml.DirectedGraph();
-graph.nodes.push(new Dgml.Node("car", "car"));
-graph.nodes.push(new Dgml.Node("truck", "truck"));
-graph.links.push(graph.createLink("car", "here"));
-console.log(Dgml.DgmlSerializer(graph).toDgml());
+var graph = new dgml.DirectedGraph();
+graph.nodes.push(new dgml.Node("car", "car"));
+graph.nodes.push(new dgml.Node("truck", "truck"));
+graph.links.push(graph.createLink("car", "truck"));
+console.log(dgml.nodeXml.Serializer(graph).toDgml());
 ```
 produces this
 ```xml

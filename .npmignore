@@ -4,10 +4,11 @@ typings
 test
 bin
 obj
-*.nsproj
+*.njsproj
 *.sln
 *.suo
 *.dat
 .travis.yml
 .gitattributes
+tsd.json
 
