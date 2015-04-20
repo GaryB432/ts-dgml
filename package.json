@@ -1,6 +1,6 @@
 {
   "name": "ts-dgml",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Directed Graph Markup Language",
   "main": "dgml.js",
   "scripts": {
