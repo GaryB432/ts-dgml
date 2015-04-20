@@ -2,3 +2,12 @@ node_modules
 typings
 **/*.ts
 test
+bin
+obj
+*.nsproj
+*.sln
+*.suo
+*.dat
+.travis.yml
+.gitattributes
+
