@@ -24,7 +24,7 @@ produces this
         <Node Id="car" Label="car"/>
         <Node Id="truck" Label="truck-label"/>
     </Nodes>
-        <Links>
+    <Links>
         <Link Source="car" Target="truck" Category="wheeled"/>
     </Links>
 </DirectedGraph>
@@ -36,8 +36,11 @@ var car = new dgml.Node("car", "car");
 car.moreProps = { Background: 'Orange' };
 graph.nodes.push(car);
 graph.nodes.push(new dgml.Node("truck", "truck-label"));
-graph.links.push(new dgml.Link("car", "truck"));
-graph.categories.push(new dgml.Category("a", "a", { Fun: 'True', NonStringIgnored: true, Tests: 'OK' }));
+graph.links.push(new dgml.Link("car", "auto"));
+graph.categories.push(new dgml.Category("a", "a", 
+    {
+        Fun: 'True', NonStringIgnored: true, Tests: 'OK'
+    }));
 var ds = new dgml.nodeXml.Serializer(graph);
 console.log(ds.toDgml());
 ```
@@ -50,8 +53,8 @@ produces this
         <Node Id="truck" Label="truck-label"/>
     </Nodes>
     <Links>
-        <Link Source="car" Target="truck"/>
-        </Links>
+        <Link Source="car" Target="auto"/>
+    </Links>
     <Categories>
         <Category Id="a" Label="a" Fun="True" Tests="OK"/>
     </Categories>
