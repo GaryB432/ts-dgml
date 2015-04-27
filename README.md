@@ -11,9 +11,10 @@ $ npm install ts-dgml
 ```js
 var graph = new dgml.DirectedGraph();
 graph.nodes.push(new dgml.Node("car", "car"));
-graph.nodes.push(new dgml.Node("truck", "truck"));
-graph.links.push(graph.createLink("car", "truck"));
-console.log(dgml.nodeXml.Serializer(graph).toDgml());
+graph.nodes.push(new dgml.Node("truck", "truck-label"));
+graph.links.push(new dgml.Link("car", "truck", "wheeled"));
+var ds = new dgml.nodeXml.Serializer(graph);
+console.log(ds.toDgml());
 ```
 produces this
 ```xml
@@ -21,13 +22,42 @@ produces this
 <DirectedGraph xmlns="http://schemas.microsoft.com/vs/2009/dgml">
     <Nodes>
         <Node Id="car" Label="car"/>
-        <Node Id="truck" Label="truck"/>
+        <Node Id="truck" Label="truck-label"/>
     </Nodes>
-    <Links>
-        <Link Source="car" Target="truck"/>
+        <Links>
+        <Link Source="car" Target="truck" Category="wheeled"/>
     </Links>
 </DirectedGraph>
 ```
+### More Advanced
+```js
+var graph = new dgml.DirectedGraph();
+var car = new dgml.Node("car", "car");
+car.moreProps = { Background: 'Orange' };
+graph.nodes.push(car);
+graph.nodes.push(new dgml.Node("truck", "truck-label"));
+graph.links.push(new dgml.Link("car", "truck"));
+graph.categories.push(new dgml.Category("a", "a", { Fun: 'True', NonStringIgnored: true, Tests: 'OK' }));
+var ds = new dgml.nodeXml.Serializer(graph);
+console.log(ds.toDgml());
+```
+produces this
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<DirectedGraph xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+    <Nodes>
+        <Node Id="car" Label="car" Background="Orange"/>
+        <Node Id="truck" Label="truck-label"/>
+    </Nodes>
+    <Links>
+        <Link Source="car" Target="truck"/>
+        </Links>
+    <Categories>
+        <Category Id="a" Label="a" Fun="True" Tests="OK"/>
+    </Categories>
+</DirectedGraph>
+```
+
 ## Tests
 
 Tests included use Mocha. Use `npm test` to run the tests.

@@ -1,18 +1,42 @@
+/// <reference path="typings/tsd.d.ts" />
 declare module dgml {
-    class Node {
+    class LabeledElement {
         id: string;
         label: string;
-        constructor(id: string, label: string);
+        constructor(id: string, label?: string);
+    }
+    class Node extends LabeledElement {
+        category: string;
+        moreProps: any;
+        constructor(id: string, label?: string, category?: string, moreProps?: any);
+    }
+    class Category extends LabeledElement {
+        moreProps: any;
+        constructor(id: string, label?: string, moreProps?: any);
     }
     class Link {
-        source: Node;
-        target: Node;
+        srcId: string;
+        targetId: string;
+        category: string;
+        constructor(srcId: string, targetId: string, category?: string);
+    }
+    interface IStyleProp {
+        name: string;
+        value: string;
+    }
+    class Style {
+        targetType: string;
+        groupLabel: string;
+        valueLabel: string;
+        condition: string;
+        props: IStyleProp[];
+        constructor(targetType: string, groupLabel: string, valueLabel: string, condition: string, props: IStyleProp[]);
     }
     class DirectedGraph {
         nodes: Node[];
         links: Link[];
-        createLink(srcId: string, targetId: string): Link;
-        private findNode(id);
+        categories: Category[];
+        styles: Style[];
     }
     class ASerializer {
         protected graph: DirectedGraph;
@@ -23,6 +47,9 @@ declare module dgml {
     module nodeXml {
         class Serializer extends ASerializer {
             constructor(graph: DirectedGraph);
+            private extend(o1, o2);
+            private someAttributes(node);
+            private linkAttributes(link);
             private nodeXmlObject();
         }
     }
