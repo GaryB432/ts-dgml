@@ -3,8 +3,8 @@ import xml = require('xml');
 
 module dgml {
 
-    export class LabeledElement {
-        constructor(public id: string, public label: string = id) { }
+    class LabeledElement {
+        constructor(public id: string, public label?: string) { }
     }
 
     export class Node extends LabeledElement {
@@ -23,15 +23,45 @@ module dgml {
         constructor(public srcId: string, public targetId: string, public category?: string) { }
     }
 
-    export interface IStyleProp {
+    interface IStyleProp {
         name: string;
         value: string;
     }
 
+    export class Style {
+        constructor(public targetType: string, public groupLabel: string, public valueLabel: string, public condition: string, public props: IStyleProp[]) { }
+    }
+
     export class DirectedGraph {
-        public nodes: Node[] = [];
-        public links: Link[] = [];
-        public categories: Category[] = [];
+        nodes: Node[] = [];
+        links: Link[] = [];
+        categories: Category[] = [];
+        styles: Style[] = [];
+
+        addExternalNodes(category: string, cb?: (n: Node) => void) {
+            var targets: { [key: string]: Node } = {},
+                nodeMap: { [key: string]: Node } = {},
+                cat: Category = new Category(category);
+
+            this.nodes.forEach(n=> {
+                nodeMap[n.id] = n;
+            });
+
+            this.links.forEach(l=> {
+                targets[l.targetId] = nodeMap[l.targetId];
+            });
+
+            for (var tname in targets) {
+                if (nodeMap[tname] === void 0) {
+                    var newNode = new Node(tname);
+                    nodeMap[tname] = newNode;
+                    newNode.category = cat.id;
+                    this.nodes.push(newNode);
+                    typeof cb === 'function' && cb(newNode);
+                }
+            }
+            this.categories.push(cat);
+        }
     }
 
     export class ASerializer {
@@ -47,10 +77,14 @@ module dgml {
             DirectedGraph: any[];
         }
 
+        interface INodeXmlOptions {
+            declaration?: boolean;
+            indent?: boolean;
+        }
 
         export class Serializer extends ASerializer {
-            constructor(graph: DirectedGraph) {
-                super(graph,() => xml(this.nodeXmlObject(), { declaration: true }));
+            constructor(graph: DirectedGraph, options: INodeXmlOptions = { declaration: true, indent: false }) {
+                super(graph,() => xml(this.nodeXmlObject(), options));
             }
 
             private extend(o1: any, o2: any): any {
@@ -67,9 +101,12 @@ module dgml {
             private someAttributes(node: Node|Category) {
                 var a: any = {
                     _attr: {
-                        Id: node.id, Label: node.label
+                        Id: node.id
                     }
                 };
+                if (node.label !== void 0) {
+                    a._attr.Label = node.label;
+                }
                 if (node instanceof Node) {
                     if (node.category !== void 0) {
                         a._attr.Category = node.category;
@@ -98,17 +135,50 @@ module dgml {
                             _attr: { xmlns: 'http://schemas.microsoft.com/vs/2009/dgml' }
                         },
                         {
-                            Nodes: this.graph.nodes.map((n) => { return { Node: this.someAttributes(n) } })
+                            Nodes: this.graph.nodes.map((node) => { return { Node: this.someAttributes(node) } })
                         },
                         {
-                            Links: this.graph.links.map((n) => { return { Link: this.linkAttributes(n) } })
+                            Links: this.graph.links.map((link) => { return { Link: this.linkAttributes(link) } })
                         },
                         {
-                            Categories: this.graph.categories.map((n) => { return { Category: this.someAttributes(n) } })
+                            Categories: this.graph.categories.map((category) => { return { Category: this.someAttributes(category) } })
+                        },
+                        {
+                            Styles: this.graph.styles.map((style) => {
+                                return {
+                                    Style: [
+                                        {
+                                            _attr: {
+                                                TargetType: style.targetType,
+                                                GroupLabel: style.groupLabel,
+                                                ValueLabel: style.valueLabel
+                                            }
+                                        },
+                                        {
+                                            Condition: {
+                                                _attr: {
+                                                    Expression: style.condition
+                                                }
+                                            }
+                                        },
+                                        {
+                                            Setter: {
+                                                _attr: {
+                                                    Property: style.props[0].name,
+                                                    Value: style.props[0].value
+                                                }
+                                            }
+                                        },
+                                    ]
+                                }
+                            })
                         }
                     ]
                 };
 
+                if (this.graph.styles.length === 0) {
+                    dg.DirectedGraph.splice(4, 1);
+                }
                 if (this.graph.categories.length === 0) {
                     dg.DirectedGraph.splice(3, 1);
                 }

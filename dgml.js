@@ -10,13 +10,11 @@ var dgml;
 (function (dgml) {
     var LabeledElement = (function () {
         function LabeledElement(id, label) {
-            if (label === void 0) { label = id; }
             this.id = id;
             this.label = label;
         }
         return LabeledElement;
     })();
-    dgml.LabeledElement = LabeledElement;
     var Node = (function (_super) {
         __extends(Node, _super);
         function Node(id, label, category, moreProps) {
@@ -45,12 +43,43 @@ var dgml;
         return Link;
     })();
     dgml.Link = Link;
+    var Style = (function () {
+        function Style(targetType, groupLabel, valueLabel, condition, props) {
+            this.targetType = targetType;
+            this.groupLabel = groupLabel;
+            this.valueLabel = valueLabel;
+            this.condition = condition;
+            this.props = props;
+        }
+        return Style;
+    })();
+    dgml.Style = Style;
     var DirectedGraph = (function () {
         function DirectedGraph() {
             this.nodes = [];
             this.links = [];
             this.categories = [];
+            this.styles = [];
         }
+        DirectedGraph.prototype.addExternalNodes = function (category, cb) {
+            var targets = {}, nodeMap = {}, cat = new Category(category);
+            this.nodes.forEach(function (n) {
+                nodeMap[n.id] = n;
+            });
+            this.links.forEach(function (l) {
+                targets[l.targetId] = nodeMap[l.targetId];
+            });
+            for (var tname in targets) {
+                if (nodeMap[tname] === void 0) {
+                    var newNode = new Node(tname);
+                    nodeMap[tname] = newNode;
+                    newNode.category = cat.id;
+                    this.nodes.push(newNode);
+                    typeof cb === 'function' && cb(newNode);
+                }
+            }
+            this.categories.push(cat);
+        };
         return DirectedGraph;
     })();
     dgml.DirectedGraph = DirectedGraph;
@@ -69,9 +98,10 @@ var dgml;
     (function (nodeXml) {
         var Serializer = (function (_super) {
             __extends(Serializer, _super);
-            function Serializer(graph) {
+            function Serializer(graph, options) {
                 var _this = this;
-                _super.call(this, graph, function () { return xml(_this.nodeXmlObject(), { declaration: true }); });
+                if (options === void 0) { options = { declaration: true, indent: false }; }
+                _super.call(this, graph, function () { return xml(_this.nodeXmlObject(), options); });
             }
             Serializer.prototype.extend = function (o1, o2) {
                 if (o2 !== void 0) {
@@ -86,10 +116,12 @@ var dgml;
             Serializer.prototype.someAttributes = function (node) {
                 var a = {
                     _attr: {
-                        Id: node.id,
-                        Label: node.label
+                        Id: node.id
                     }
                 };
+                if (node.label !== void 0) {
+                    a._attr.Label = node.label;
+                }
                 if (node instanceof Node) {
                     if (node.category !== void 0) {
                         a._attr.Category = node.category;
@@ -118,22 +150,55 @@ var dgml;
                             _attr: { xmlns: 'http://schemas.microsoft.com/vs/2009/dgml' }
                         },
                         {
-                            Nodes: this.graph.nodes.map(function (n) {
-                                return { Node: _this.someAttributes(n) };
+                            Nodes: this.graph.nodes.map(function (node) {
+                                return { Node: _this.someAttributes(node) };
                             })
                         },
                         {
-                            Links: this.graph.links.map(function (n) {
-                                return { Link: _this.linkAttributes(n) };
+                            Links: this.graph.links.map(function (link) {
+                                return { Link: _this.linkAttributes(link) };
                             })
                         },
                         {
-                            Categories: this.graph.categories.map(function (n) {
-                                return { Category: _this.someAttributes(n) };
+                            Categories: this.graph.categories.map(function (category) {
+                                return { Category: _this.someAttributes(category) };
+                            })
+                        },
+                        {
+                            Styles: this.graph.styles.map(function (style) {
+                                return {
+                                    Style: [
+                                        {
+                                            _attr: {
+                                                TargetType: style.targetType,
+                                                GroupLabel: style.groupLabel,
+                                                ValueLabel: style.valueLabel
+                                            }
+                                        },
+                                        {
+                                            Condition: {
+                                                _attr: {
+                                                    Expression: style.condition
+                                                }
+                                            }
+                                        },
+                                        {
+                                            Setter: {
+                                                _attr: {
+                                                    Property: style.props[0].name,
+                                                    Value: style.props[0].value
+                                                }
+                                            }
+                                        },
+                                    ]
+                                };
                             })
                         }
                     ]
                 };
+                if (this.graph.styles.length === 0) {
+                    dg.DirectedGraph.splice(4, 1);
+                }
                 if (this.graph.categories.length === 0) {
                     dg.DirectedGraph.splice(3, 1);
                 }

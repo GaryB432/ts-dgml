@@ -38,6 +38,7 @@
     <Content Include=".gitignore" />
     <Content Include=".npmignore" />
     <Content Include=".travis.yml" />
+    <Content Include="CHANGELOG.md" />
     <Content Include="LICENSE" />
     <Content Include="package.json" />
     <Content Include="README.md" />
