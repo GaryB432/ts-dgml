@@ -37,6 +37,7 @@ declare module dgml {
         links: Link[];
         categories: Category[];
         styles: Style[];
+        addExternalNodes(category: string, cb?: (n: Node) => void): void;
     }
     class ASerializer {
         protected graph: DirectedGraph;
@@ -45,8 +46,15 @@ declare module dgml {
         toDgml(): string;
     }
     module nodeXml {
+        interface INodeXmlObject {
+            DirectedGraph: any[];
+        }
+        interface INodeXmlOptions {
+            declaration?: boolean;
+            indent?: boolean;
+        }
         class Serializer extends ASerializer {
-            constructor(graph: DirectedGraph);
+            constructor(graph: DirectedGraph, options?: INodeXmlOptions);
             private extend(o1, o2);
             private someAttributes(node);
             private linkAttributes(link);

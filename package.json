@@ -4,7 +4,8 @@
   "description": "Directed Graph Markup Language",
   "main": "dgml.js",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "tsc": "tsc --module commonjs dgml --declaration --noImplicitAny"
   },
   "repository": {
     "type": "git",

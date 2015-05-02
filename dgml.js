@@ -15,6 +15,7 @@ var dgml;
         }
         return LabeledElement;
     })();
+    dgml.LabeledElement = LabeledElement;
     var Node = (function (_super) {
         __extends(Node, _super);
         function Node(id, label, category, moreProps) {

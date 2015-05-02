@@ -3,7 +3,7 @@ import xml = require('xml');
 
 module dgml {
 
-    class LabeledElement {
+    export class LabeledElement {
         constructor(public id: string, public label?: string) { }
     }
 
@@ -23,7 +23,7 @@ module dgml {
         constructor(public srcId: string, public targetId: string, public category?: string) { }
     }
 
-    interface IStyleProp {
+    export interface IStyleProp {
         name: string;
         value: string;
     }
@@ -73,11 +73,11 @@ module dgml {
     }
 
     export module nodeXml {
-        interface INodeXmlObject {
+        export interface INodeXmlObject {
             DirectedGraph: any[];
         }
 
-        interface INodeXmlOptions {
+        export interface INodeXmlOptions {
             declaration?: boolean;
             indent?: boolean;
         }
