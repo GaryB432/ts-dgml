@@ -42,7 +42,7 @@ describe('dgml serializer', function () {
         graph.nodes.push(new dgml.Node("coffee-maker"));
 
         graph.links.push(new dgml.Link("coffee-maker", "H-3941"));
-        graph.links.push(new dgml.Link("coffee-maker", "oops"));
+        graph.links.push(new dgml.Link("coffee-maker", "timer"));
 
         graph.categories.push(new dgml.Category("Appliances"));
 
