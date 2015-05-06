@@ -134,8 +134,7 @@ var dgml;
             Serializer.prototype.linkAttributes = function (link) {
                 var a = {
                     _attr: {
-                        Source: link.srcId,
-                        Target: link.targetId
+                        Source: link.srcId, Target: link.targetId
                     }
                 };
                 if (link.category !== void 0) {
@@ -151,19 +150,13 @@ var dgml;
                             _attr: { xmlns: 'http://schemas.microsoft.com/vs/2009/dgml' }
                         },
                         {
-                            Nodes: this.graph.nodes.map(function (node) {
-                                return { Node: _this.someAttributes(node) };
-                            })
+                            Nodes: this.graph.nodes.map(function (node) { return { Node: _this.someAttributes(node) }; })
                         },
                         {
-                            Links: this.graph.links.map(function (link) {
-                                return { Link: _this.linkAttributes(link) };
-                            })
+                            Links: this.graph.links.map(function (link) { return { Link: _this.linkAttributes(link) }; })
                         },
                         {
-                            Categories: this.graph.categories.map(function (category) {
-                                return { Category: _this.someAttributes(category) };
-                            })
+                            Categories: this.graph.categories.map(function (category) { return { Category: _this.someAttributes(category) }; })
                         },
                         {
                             Styles: this.graph.styles.map(function (style) {

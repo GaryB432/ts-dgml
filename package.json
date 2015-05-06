@@ -4,9 +4,8 @@
   "description": "Directed Graph Markup Language",
   "main": "dgml.js",
   "scripts": {
-    "pretest": "npm run-script tsc",
-    "test": "mocha --reporter spec",
-    "tsc": "tsc --module commonjs --declaration --noImplicitAny dgml.ts test/dgml.test.ts"
+    "pretest": "tsc",
+    "test": "mocha --reporter spec"
   },
   "repository": {
     "type": "git",

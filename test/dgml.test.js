@@ -10,7 +10,18 @@ describe('dgml serializer', function () {
         graph.links.push(new dgml.Link("coffee-maker", "H-3941"));
         graph.links.push(new dgml.Link("coffee-maker", "timer"));
         var ds = new dgml.nodeXml.Serializer(graph);
-        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">" + "<Nodes>" + "<Node Id=\"H-3941\" Label=\"heater\"/>" + "<Node Id=\"timer\"/>" + "<Node Id=\"coffee-maker\"/>" + "</Nodes>" + "<Links>" + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>" + "<Link Source=\"coffee-maker\" Target=\"timer\"/>" + "</Links>" + "</DirectedGraph>";
+        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+            + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
+            + "<Nodes>"
+            + "<Node Id=\"H-3941\" Label=\"heater\"/>"
+            + "<Node Id=\"timer\"/>"
+            + "<Node Id=\"coffee-maker\"/>"
+            + "</Nodes>"
+            + "<Links>"
+            + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>"
+            + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
+            + "</Links>"
+            + "</DirectedGraph>";
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
     it('includes categories', function () {
@@ -22,7 +33,21 @@ describe('dgml serializer', function () {
         graph.links.push(new dgml.Link("coffee-maker", "timer"));
         graph.categories.push(new dgml.Category("Appliances"));
         var ds = new dgml.nodeXml.Serializer(graph);
-        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">" + "<Nodes>" + "<Node Id=\"H-3941\" Label=\"heater\"/>" + "<Node Id=\"timer\"/>" + "<Node Id=\"coffee-maker\"/>" + "</Nodes>" + "<Links>" + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>" + "<Link Source=\"coffee-maker\" Target=\"timer\"/>" + "</Links>" + "<Categories>" + "<Category Id=\"Appliances\"/>" + "</Categories>" + "</DirectedGraph>";
+        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+            + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
+            + "<Nodes>"
+            + "<Node Id=\"H-3941\" Label=\"heater\"/>"
+            + "<Node Id=\"timer\"/>"
+            + "<Node Id=\"coffee-maker\"/>"
+            + "</Nodes>"
+            + "<Links>"
+            + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>"
+            + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
+            + "</Links>"
+            + "<Categories>"
+            + "<Category Id=\"Appliances\"/>"
+            + "</Categories>"
+            + "</DirectedGraph>";
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
     it('includes more props', function () {
@@ -35,7 +60,18 @@ describe('dgml serializer', function () {
         graph.links.push(new dgml.Link("coffee-maker", "H-3941"));
         graph.links.push(new dgml.Link("coffee-maker", "timer"));
         var ds = new dgml.nodeXml.Serializer(graph);
-        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">" + "<Nodes>" + "<Node Id=\"H-3941\" Label=\"heater\" Background=\"Red\"/>" + "<Node Id=\"timer\"/>" + "<Node Id=\"coffee-maker\"/>" + "</Nodes>" + "<Links>" + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>" + "<Link Source=\"coffee-maker\" Target=\"timer\"/>" + "</Links>" + "</DirectedGraph>";
+        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+            + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
+            + "<Nodes>"
+            + "<Node Id=\"H-3941\" Label=\"heater\" Background=\"Red\"/>"
+            + "<Node Id=\"timer\"/>"
+            + "<Node Id=\"coffee-maker\"/>"
+            + "</Nodes>"
+            + "<Links>"
+            + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>"
+            + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
+            + "</Links>"
+            + "</DirectedGraph>";
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
     it('includes category props', function () {
@@ -51,7 +87,21 @@ describe('dgml serializer', function () {
         heater.category = electronics.id;
         graph.categories.push(electronics);
         var ds = new dgml.nodeXml.Serializer(graph);
-        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">" + "<Nodes>" + "<Node Id=\"H-3941\" Label=\"heater\" Category=\"c1\" Background=\"Red\"/>" + "<Node Id=\"timer\"/>" + "<Node Id=\"coffee-maker\"/>" + "</Nodes>" + "<Links>" + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>" + "<Link Source=\"coffee-maker\" Target=\"timer\"/>" + "</Links>" + "<Categories>" + "<Category Id=\"c1\" Label=\"Electronic\" Fun=\"True\" Tests=\"OK\"/>" + "</Categories>" + "</DirectedGraph>";
+        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+            + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
+            + "<Nodes>"
+            + "<Node Id=\"H-3941\" Label=\"heater\" Category=\"c1\" Background=\"Red\"/>"
+            + "<Node Id=\"timer\"/>"
+            + "<Node Id=\"coffee-maker\"/>"
+            + "</Nodes>"
+            + "<Links>"
+            + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>"
+            + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
+            + "</Links>"
+            + "<Categories>"
+            + "<Category Id=\"c1\" Label=\"Electronic\" Fun=\"True\" Tests=\"OK\"/>"
+            + "</Categories>"
+            + "</DirectedGraph>";
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
     it('includes styles', function () {
@@ -68,7 +118,27 @@ describe('dgml serializer', function () {
         graph.categories.push(electronics);
         graph.styles.push(new dgml.Style('Node', 'Wires', 'True', "HasCategory('c1')", [{ name: "Background", value: "Blue" }]));
         var ds = new dgml.nodeXml.Serializer(graph);
-        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">" + "<Nodes>" + "<Node Id=\"H-3941\" Label=\"heater\" Category=\"c1\" Background=\"Red\"/>" + "<Node Id=\"timer\"/>" + "<Node Id=\"coffee-maker\"/>" + "</Nodes>" + "<Links>" + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>" + "<Link Source=\"coffee-maker\" Target=\"timer\"/>" + "</Links>" + "<Categories>" + "<Category Id=\"c1\" Label=\"Electronic\" Fun=\"True\" Tests=\"OK\"/>" + "</Categories>" + "<Styles>" + "<Style TargetType=\"Node\" GroupLabel=\"Wires\" ValueLabel=\"True\">" + "<Condition Expression=\"HasCategory(&apos;c1&apos;)\"/>" + "<Setter Property=\"Background\" Value=\"Blue\"/>" + "</Style>" + "</Styles>" + "</DirectedGraph>";
+        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+            + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
+            + "<Nodes>"
+            + "<Node Id=\"H-3941\" Label=\"heater\" Category=\"c1\" Background=\"Red\"/>"
+            + "<Node Id=\"timer\"/>"
+            + "<Node Id=\"coffee-maker\"/>"
+            + "</Nodes>"
+            + "<Links>"
+            + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>"
+            + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
+            + "</Links>"
+            + "<Categories>"
+            + "<Category Id=\"c1\" Label=\"Electronic\" Fun=\"True\" Tests=\"OK\"/>"
+            + "</Categories>"
+            + "<Styles>"
+            + "<Style TargetType=\"Node\" GroupLabel=\"Wires\" ValueLabel=\"True\">"
+            + "<Condition Expression=\"HasCategory(&apos;c1&apos;)\"/>"
+            + "<Setter Property=\"Background\" Value=\"Blue\"/>"
+            + "</Style>"
+            + "</Styles>"
+            + "</DirectedGraph>";
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
     it('includes styles no categories', function () {
@@ -80,7 +150,24 @@ describe('dgml serializer', function () {
         graph.links.push(new dgml.Link("coffee-maker", "timer"));
         graph.styles.push(new dgml.Style('Node', 'Wires', 'True', "HasCategory('c1')", [{ name: "Background", value: "Blue" }]));
         var ds = new dgml.nodeXml.Serializer(graph);
-        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">" + "<Nodes>" + "<Node Id=\"H-3941\" Label=\"heater\"/>" + "<Node Id=\"timer\"/>" + "<Node Id=\"coffee-maker\"/>" + "</Nodes>" + "<Links>" + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>" + "<Link Source=\"coffee-maker\" Target=\"timer\"/>" + "</Links>" + "<Styles>" + "<Style TargetType=\"Node\" GroupLabel=\"Wires\" ValueLabel=\"True\">" + "<Condition Expression=\"HasCategory(&apos;c1&apos;)\"/>" + "<Setter Property=\"Background\" Value=\"Blue\"/>" + "</Style>" + "</Styles>" + "</DirectedGraph>";
+        var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+            + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
+            + "<Nodes>"
+            + "<Node Id=\"H-3941\" Label=\"heater\"/>"
+            + "<Node Id=\"timer\"/>"
+            + "<Node Id=\"coffee-maker\"/>"
+            + "</Nodes>"
+            + "<Links>"
+            + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>"
+            + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
+            + "</Links>"
+            + "<Styles>"
+            + "<Style TargetType=\"Node\" GroupLabel=\"Wires\" ValueLabel=\"True\">"
+            + "<Condition Expression=\"HasCategory(&apos;c1&apos;)\"/>"
+            + "<Setter Property=\"Background\" Value=\"Blue\"/>"
+            + "</Style>"
+            + "</Styles>"
+            + "</DirectedGraph>";
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
 });
