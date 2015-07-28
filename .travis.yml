@@ -4,6 +4,6 @@ node_js:
   - "0.11"
   - "0.10"
 before_install:
-- npm install -g typescript@1.5.0-beta
+- npm install -g typescript@1.5.3
 script:
 - npm test
