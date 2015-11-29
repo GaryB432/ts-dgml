@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/GaryB432/ts-dgml.svg?branch=master)](https://travis-ci.org/GaryB432/ts-dgml)
 
+[![NPM](https://nodei.co/npm/ts-dgml.png)](https://nodei.co/npm/ts-dgml/)
+
 Tools for [Directed Graph Markup Language](http://en.wikipedia.org/wiki/DGML).
 
 ## Install
