@@ -249,7 +249,7 @@ Contributions to the project are welcome. Feel free to fork and improve. I accep
 # License
 
 ## Internet Systems Consortium license
-Copyright (c) 2015, Gary Bortosky and contributers
+Copyright (c) 2016, Gary Bortosky and contributers
 
 Permission to use, copy, modify, and/or distribute this software for any purpose
 with or without fee is hereby granted, provided that the above copyright notice
