@@ -37,7 +37,6 @@ namespace dgml {
             public valueLabel: string,
             public condition: string,
             public props: IStyleProp[]) {
-
         }
     }
 
@@ -51,7 +50,6 @@ namespace dgml {
             let targets: { [key: string]: Node } = {},
                 nodeMap: { [key: string]: Node } = {},
                 cat: Category = this.mergeCategory(catId);
-
             this.nodes.forEach(n => {
                 nodeMap[n.id] = n;
             });
@@ -72,13 +70,12 @@ namespace dgml {
         }
 
         private mergeCategory(id: string): Category {
-            let idCats = this.categories.filter((c) => c.id === id),
+            let idCats: Category[] = this.categories.filter((c) => c.id === id),
                 tempCat: Category;
             if (idCats.length === 0) {
                 tempCat = new Category(id);
-                this.categories.push(tempCat)
-            }
-            else {
+                this.categories.push(tempCat);
+            } else {
                 tempCat = idCats[0];
             }
             return tempCat;

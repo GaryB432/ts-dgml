@@ -1,5 +1,5 @@
 "use strict";
-var chai = require('chai');
+var assert = require('assert');
 var dgml = require('../dgml');
 describe('dgml serializer', function () {
     it('serializes properly', function () {
@@ -22,7 +22,7 @@ describe('dgml serializer', function () {
             + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
             + "</Links>"
             + "</DirectedGraph>";
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(ds.toDgml(), expectedDgml);
     });
     describe("external categories", function () {
         var graph;
@@ -38,9 +38,9 @@ describe('dgml serializer', function () {
         it('with callback', function (done) {
             graph.links.push(new dgml.Link("other", "external_thing"));
             graph.addExternalNodes("external_stuff", function (newNode) {
-                chai.expect(newNode.id).to.equal("external_thing");
-                chai.expect(newNode.category).to.equal("external_stuff");
-                chai.expect(newNode.label).to.be.undefined;
+                assert.equal(newNode.id, "external_thing");
+                assert.equal(newNode.category, "external_stuff");
+                assert.equal(newNode.label, undefined);
                 done();
             });
             var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -61,7 +61,7 @@ describe('dgml serializer', function () {
                 + "<Category Id=\"external_stuff\"/>"
                 + "</Categories>"
                 + "</DirectedGraph>";
-            chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
+            assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
         });
         it('without callback', function () {
             graph.addExternalNodes("external_stuff");
@@ -81,7 +81,7 @@ describe('dgml serializer', function () {
                 + "<Category Id=\"external_stuff\"/>"
                 + "</Categories>"
                 + "</DirectedGraph>";
-            chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
+            assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
         });
         it('does not duplicate existing category', function () {
             graph.addExternalNodes("Appliances");
@@ -100,7 +100,7 @@ describe('dgml serializer', function () {
                 + "<Category Id=\"Appliances\"/>"
                 + "</Categories>"
                 + "</DirectedGraph>";
-            chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
+            assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
         });
     });
     it('includes categories', function () {
@@ -127,7 +127,7 @@ describe('dgml serializer', function () {
             + "<Category Id=\"Appliances\"/>"
             + "</Categories>"
             + "</DirectedGraph>";
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
     });
     it('includes more props', function () {
         var graph = new dgml.DirectedGraph();
@@ -151,7 +151,7 @@ describe('dgml serializer', function () {
             + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
             + "</Links>"
             + "</DirectedGraph>";
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(ds.toDgml(), expectedDgml);
     });
     it('includes category props', function () {
         var graph = new dgml.DirectedGraph();
@@ -181,7 +181,7 @@ describe('dgml serializer', function () {
             + "<Category Id=\"c1\" Label=\"Electronic\" Fun=\"True\" Tests=\"OK\"/>"
             + "</Categories>"
             + "</DirectedGraph>";
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(ds.toDgml(), expectedDgml);
     });
     it('includes styles', function () {
         var graph = new dgml.DirectedGraph();
@@ -218,7 +218,7 @@ describe('dgml serializer', function () {
             + "</Style>"
             + "</Styles>"
             + "</DirectedGraph>";
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(ds.toDgml(), expectedDgml);
     });
     it('includes styles no categories', function () {
         var graph = new dgml.DirectedGraph();
@@ -247,6 +247,6 @@ describe('dgml serializer', function () {
             + "</Style>"
             + "</Styles>"
             + "</DirectedGraph>";
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(ds.toDgml(), expectedDgml);
     });
 });

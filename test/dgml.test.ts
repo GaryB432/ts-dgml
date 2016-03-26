@@ -1,7 +1,7 @@
 ﻿/// <reference path="../typings/tsd.d.ts" />
 
 import xml = require('xml');
-import chai = require('chai');
+import assert = require('assert');
 import dgml = require('../dgml');
 
 describe('dgml serializer', () => {
@@ -31,7 +31,7 @@ describe('dgml serializer', () => {
             + "</Links>"
             + "</DirectedGraph>";
 
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(ds.toDgml(), expectedDgml);
     });
 
     describe("external categories", () => {
@@ -51,9 +51,9 @@ describe('dgml serializer', () => {
             graph.links.push(new dgml.Link("other", "external_thing"));
 
             graph.addExternalNodes("external_stuff", (newNode: dgml.Node) => {
-                chai.expect(newNode.id).to.equal("external_thing");
-                chai.expect(newNode.category).to.equal("external_stuff");
-                chai.expect(newNode.label).to.be.undefined;
+                assert.equal(newNode.id, "external_thing");
+                assert.equal(newNode.category, "external_stuff");
+                assert.equal(newNode.label, undefined);
                 done();
             });
             let expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -74,7 +74,7 @@ describe('dgml serializer', () => {
                 + "<Category Id=\"external_stuff\"/>"
                 + "</Categories>"
                 + "</DirectedGraph>";
-            chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
+            assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
         });
 
         it('without callback', () => {
@@ -96,7 +96,7 @@ describe('dgml serializer', () => {
                 + "<Category Id=\"external_stuff\"/>"
                 + "</Categories>"
                 + "</DirectedGraph>";
-            chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
+            assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
         });
 
         it('does not duplicate existing category', () => {
@@ -117,7 +117,7 @@ describe('dgml serializer', () => {
                 + "<Category Id=\"Appliances\"/>"
                 + "</Categories>"
                 + "</DirectedGraph>";
-            chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
+            assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
         });
     });
 
@@ -151,7 +151,7 @@ describe('dgml serializer', () => {
             + "</Categories>"
             + "</DirectedGraph>";
 
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
     });
 
     it('includes more props', () => {
@@ -182,8 +182,7 @@ describe('dgml serializer', () => {
             + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
             + "</Links>"
             + "</DirectedGraph>";
-
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(ds.toDgml(), expectedDgml);
     });
 
     it('includes category props', () => {
@@ -223,7 +222,7 @@ describe('dgml serializer', () => {
             + "</Categories>"
             + "</DirectedGraph>";
 
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(ds.toDgml(), expectedDgml);
     });
 
     it('includes styles', () => {
@@ -271,7 +270,7 @@ describe('dgml serializer', () => {
             + "</Styles>"
             + "</DirectedGraph>";
 
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(ds.toDgml(), expectedDgml);
     });
 
     it('includes styles no categories', () => {
@@ -307,6 +306,6 @@ describe('dgml serializer', () => {
             + "</Styles>"
             + "</DirectedGraph>";
 
-        chai.expect(ds.toDgml()).to.equal(expectedDgml);
+        assert.equal(ds.toDgml(), expectedDgml);
     });
 });

@@ -1,6 +1,6 @@
 {
   "name": "ts-dgml",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Directed Graph Markup Language",
   "main": "dgml.js",
   "scripts": {
@@ -34,7 +34,6 @@
   },
   "homepage": "https://github.com/GaryB432/ts-dgml",
   "devDependencies": {
-    "chai": "^3.5.0",
     "mocha": "^2.4.5",
     "tslint": "^3.6.0",
     "typescript": "^1.8.9"
