@@ -4,9 +4,9 @@ import xml = require('xml');
 import chai = require('chai');
 import dgml = require('../dgml');
 
-describe('dgml serializer', function () {
+describe('dgml serializer', () => {
 
-    it('serializes properly',() => {
+    it('serializes properly', () => {
         var graph = new dgml.DirectedGraph();
 
         graph.nodes.push(new dgml.Node("H-3941", "heater"));
@@ -34,7 +34,94 @@ describe('dgml serializer', function () {
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
 
-    it('includes categories',() => {
+    describe("external categories", () => {
+        let graph: dgml.DirectedGraph;
+        beforeEach(() => {
+            graph = new dgml.DirectedGraph();
+            graph.nodes.push(new dgml.Node("H-3941", "heater"));
+            graph.nodes.push(new dgml.Node("timer"));
+            graph.nodes.push(new dgml.Node("coffee-maker"));
+
+            graph.links.push(new dgml.Link("coffee-maker", "H-3941"));
+            graph.links.push(new dgml.Link("coffee-maker", "timer"));
+
+            graph.categories.push(new dgml.Category("Appliances"));
+        })
+        it('with callback', (done: MochaDone) => {
+            graph.links.push(new dgml.Link("other", "external_thing"));
+
+            graph.addExternalNodes("external_stuff", (newNode: dgml.Node) => {
+                chai.expect(newNode.id).to.equal("external_thing");
+                chai.expect(newNode.category).to.equal("external_stuff");
+                chai.expect(newNode.label).to.be.undefined;
+                done();
+            });
+            let expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
+                + "<Nodes>"
+                + "<Node Id=\"H-3941\" Label=\"heater\"/>"
+                + "<Node Id=\"timer\"/>"
+                + "<Node Id=\"coffee-maker\"/>"
+                + "<Node Id=\"external_thing\" Category=\"external_stuff\"/>"
+                + "</Nodes>"
+                + "<Links>"
+                + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>"
+                + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
+                + "<Link Source=\"other\" Target=\"external_thing\"/>"
+                + "</Links>"
+                + "<Categories>"
+                + "<Category Id=\"Appliances\"/>"
+                + "<Category Id=\"external_stuff\"/>"
+                + "</Categories>"
+                + "</DirectedGraph>";
+            chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
+        });
+
+        it('without callback', () => {
+            graph.addExternalNodes("external_stuff");
+
+            let expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
+                + "<Nodes>"
+                + "<Node Id=\"H-3941\" Label=\"heater\"/>"
+                + "<Node Id=\"timer\"/>"
+                + "<Node Id=\"coffee-maker\"/>"
+                + "</Nodes>"
+                + "<Links>"
+                + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>"
+                + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
+                + "</Links>"
+                + "<Categories>"
+                + "<Category Id=\"Appliances\"/>"
+                + "<Category Id=\"external_stuff\"/>"
+                + "</Categories>"
+                + "</DirectedGraph>";
+            chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
+        });
+
+        it.skip('does not duplicate existing category', () => {
+            graph.addExternalNodes("Appliances");
+
+            let expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
+                + "<Nodes>"
+                + "<Node Id=\"H-3941\" Label=\"heater\"/>"
+                + "<Node Id=\"timer\"/>"
+                + "<Node Id=\"coffee-maker\"/>"
+                + "</Nodes>"
+                + "<Links>"
+                + "<Link Source=\"coffee-maker\" Target=\"H-3941\"/>"
+                + "<Link Source=\"coffee-maker\" Target=\"timer\"/>"
+                + "</Links>"
+                + "<Categories>"
+                + "<Category Id=\"Appliances\"/>"
+                + "</Categories>"
+                + "</DirectedGraph>";
+            chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
+        });
+    });
+
+    it('includes categories', () => {
         var graph = new dgml.DirectedGraph();
 
         graph.nodes.push(new dgml.Node("H-3941", "heater"));
@@ -67,7 +154,7 @@ describe('dgml serializer', function () {
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
 
-    it('includes more props',() => {
+    it('includes more props', () => {
         var graph = new dgml.DirectedGraph();
 
         var heater = new dgml.Node("H-3941", "heater");
@@ -99,7 +186,7 @@ describe('dgml serializer', function () {
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
 
-    it('includes category props',() => {
+    it('includes category props', () => {
         var graph = new dgml.DirectedGraph();
 
         var heater = new dgml.Node("H-3941", "heater");
@@ -139,7 +226,7 @@ describe('dgml serializer', function () {
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
 
-    it('includes styles',() => {
+    it('includes styles', () => {
         var graph = new dgml.DirectedGraph();
 
         var heater = new dgml.Node("H-3941", "heater");
@@ -187,7 +274,7 @@ describe('dgml serializer', function () {
         chai.expect(ds.toDgml()).to.equal(expectedDgml);
     });
 
-    it('includes styles no categories',() => {
+    it('includes styles no categories', () => {
         var graph = new dgml.DirectedGraph();
 
         graph.nodes.push(new dgml.Node("H-3941", "heater"));

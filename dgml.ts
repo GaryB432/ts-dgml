@@ -1,7 +1,9 @@
 ﻿/// <reference path="typings/tsd.d.ts" />
-import xml = require('xml');
+let xml: (input: any, options: any) => string = require("xml");
 
-module dgml {
+namespace dgml {
+
+    "use strict";
 
     export class LabeledElement {
         constructor(public id: string, public label?: string) { }
@@ -29,35 +31,42 @@ module dgml {
     }
 
     export class Style {
-        constructor(public targetType: string, public groupLabel: string, public valueLabel: string, public condition: string, public props: IStyleProp[]) { }
+        constructor(
+            public targetType: string,
+            public groupLabel: string,
+            public valueLabel: string,
+            public condition: string,
+            public props: IStyleProp[]) {
+
+        }
     }
 
     export class DirectedGraph {
-        nodes: Node[] = [];
-        links: Link[] = [];
-        categories: Category[] = [];
-        styles: Style[] = [];
+        public nodes: Node[] = [];
+        public links: Link[] = [];
+        public categories: Category[] = [];
+        public styles: Style[] = [];
 
-        addExternalNodes(category: string, cb?: (n: Node) => void) {
-            var targets: { [key: string]: Node } = {},
+        public addExternalNodes(category: string, cb?: (n: Node) => void): void {
+            let targets: { [key: string]: Node } = {},
                 nodeMap: { [key: string]: Node } = {},
                 cat: Category = new Category(category);
 
-            this.nodes.forEach(n=> {
+            this.nodes.forEach(n => {
                 nodeMap[n.id] = n;
             });
-
-            this.links.forEach(l=> {
+            this.links.forEach(l => {
                 targets[l.targetId] = nodeMap[l.targetId];
             });
-
-            for (var tname in targets) {
+            for (let tname in targets) {
                 if (nodeMap[tname] === void 0) {
-                    var newNode = new Node(tname);
+                    let newNode: Node = new Node(tname);
                     nodeMap[tname] = newNode;
                     newNode.category = cat.id;
                     this.nodes.push(newNode);
-                    typeof cb === 'function' && cb(newNode);
+                    if (cb) {
+                        cb(newNode);
+                    }
                 }
             }
             this.categories.push(cat);
@@ -67,12 +76,12 @@ module dgml {
     export class ASerializer {
         constructor(protected graph: DirectedGraph, private toXml: () => string) {
         }
-        toDgml() {
+        public toDgml(): string {
             return this.toXml();
         }
     }
 
-    export module nodeXml {
+    export namespace nodeXml {
         export interface INodeXmlObject {
             DirectedGraph: any[];
         }
@@ -84,13 +93,13 @@ module dgml {
 
         export class Serializer extends ASerializer {
             constructor(graph: DirectedGraph, options: INodeXmlOptions = { declaration: true, indent: false }) {
-                super(graph,() => xml(this.nodeXmlObject(), options));
+                super(graph, () => xml(this.nodeXmlObject(), options));
             }
 
             private extend(o1: any, o2: any): any {
                 if (o2 !== void 0) {
-                    for (var p in o2) {
-                        if (o2.hasOwnProperty(p) && typeof o2[p] === 'string') {
+                    for (let p in o2) {
+                        if (o2.hasOwnProperty(p) && typeof o2[p] === "string") {
                             o1[p] = o2[p];
                         }
                     }
@@ -98,8 +107,8 @@ module dgml {
                 return o1;
             }
 
-            private someAttributes(node: Node|Category) {
-                var a: any = {
+            private someAttributes(node: Node | Category): any {
+                let a: any = {
                     _attr: {
                         Id: node.id
                     }
@@ -116,8 +125,8 @@ module dgml {
                 return a;
             }
 
-            private linkAttributes(link: Link) {
-                var a: any = {
+            private linkAttributes(link: Link): any {
+                let a: any = {
                     _attr: {
                         Source: link.srcId, Target: link.targetId
                     }
@@ -127,21 +136,21 @@ module dgml {
                 }
                 return a;
             }
-            private nodeXmlObject() {
-                var dg: INodeXmlObject = {
+            private nodeXmlObject(): INodeXmlObject {
+                let dg: INodeXmlObject = {
                     DirectedGraph:
                     [
                         {
-                            _attr: { xmlns: 'http://schemas.microsoft.com/vs/2009/dgml' }
+                            _attr: { xmlns: "http://schemas.microsoft.com/vs/2009/dgml" }
                         },
                         {
-                            Nodes: this.graph.nodes.map((node) => { return { Node: this.someAttributes(node) } })
+                            Nodes: this.graph.nodes.map((node) => { return { Node: this.someAttributes(node) }; })
                         },
                         {
-                            Links: this.graph.links.map((link) => { return { Link: this.linkAttributes(link) } })
+                            Links: this.graph.links.map((link) => { return { Link: this.linkAttributes(link) }; })
                         },
                         {
-                            Categories: this.graph.categories.map((category) => { return { Category: this.someAttributes(category) } })
+                            Categories: this.graph.categories.map((category) => { return { Category: this.someAttributes(category) }; })
                         },
                         {
                             Styles: this.graph.styles.map((style) => {
@@ -168,9 +177,9 @@ module dgml {
                                                     Value: style.props[0].value
                                                 }
                                             }
-                                        },
+                                        }
                                     ]
-                                }
+                                };
                             })
                         }
                     ]

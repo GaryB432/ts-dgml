@@ -1,20 +1,20 @@
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-/// <reference path="typings/tsd.d.ts" />
-var xml = require('xml');
+var xml = require("xml");
 var dgml;
 (function (dgml) {
+    "use strict";
     var LabeledElement = (function () {
         function LabeledElement(id, label) {
             this.id = id;
             this.label = label;
         }
         return LabeledElement;
-    })();
+    }());
     dgml.LabeledElement = LabeledElement;
     var Node = (function (_super) {
         __extends(Node, _super);
@@ -24,7 +24,7 @@ var dgml;
             this.moreProps = moreProps;
         }
         return Node;
-    })(LabeledElement);
+    }(LabeledElement));
     dgml.Node = Node;
     var Category = (function (_super) {
         __extends(Category, _super);
@@ -33,7 +33,7 @@ var dgml;
             this.moreProps = moreProps;
         }
         return Category;
-    })(LabeledElement);
+    }(LabeledElement));
     dgml.Category = Category;
     var Link = (function () {
         function Link(srcId, targetId, category) {
@@ -42,7 +42,7 @@ var dgml;
             this.category = category;
         }
         return Link;
-    })();
+    }());
     dgml.Link = Link;
     var Style = (function () {
         function Style(targetType, groupLabel, valueLabel, condition, props) {
@@ -53,7 +53,7 @@ var dgml;
             this.props = props;
         }
         return Style;
-    })();
+    }());
     dgml.Style = Style;
     var DirectedGraph = (function () {
         function DirectedGraph() {
@@ -76,13 +76,15 @@ var dgml;
                     nodeMap[tname] = newNode;
                     newNode.category = cat.id;
                     this.nodes.push(newNode);
-                    typeof cb === 'function' && cb(newNode);
+                    if (cb) {
+                        cb(newNode);
+                    }
                 }
             }
             this.categories.push(cat);
         };
         return DirectedGraph;
-    })();
+    }());
     dgml.DirectedGraph = DirectedGraph;
     var ASerializer = (function () {
         function ASerializer(graph, toXml) {
@@ -93,7 +95,7 @@ var dgml;
             return this.toXml();
         };
         return ASerializer;
-    })();
+    }());
     dgml.ASerializer = ASerializer;
     var nodeXml;
     (function (nodeXml) {
@@ -107,7 +109,7 @@ var dgml;
             Serializer.prototype.extend = function (o1, o2) {
                 if (o2 !== void 0) {
                     for (var p in o2) {
-                        if (o2.hasOwnProperty(p) && typeof o2[p] === 'string') {
+                        if (o2.hasOwnProperty(p) && typeof o2[p] === "string") {
                             o1[p] = o2[p];
                         }
                     }
@@ -147,7 +149,7 @@ var dgml;
                 var dg = {
                     DirectedGraph: [
                         {
-                            _attr: { xmlns: 'http://schemas.microsoft.com/vs/2009/dgml' }
+                            _attr: { xmlns: "http://schemas.microsoft.com/vs/2009/dgml" }
                         },
                         {
                             Nodes: this.graph.nodes.map(function (node) { return { Node: _this.someAttributes(node) }; })
@@ -183,7 +185,7 @@ var dgml;
                                                     Value: style.props[0].value
                                                 }
                                             }
-                                        },
+                                        }
                                     ]
                                 };
                             })
@@ -199,7 +201,7 @@ var dgml;
                 return dg;
             };
             return Serializer;
-        })(ASerializer);
+        }(ASerializer));
         nodeXml.Serializer = Serializer;
     })(nodeXml = dgml.nodeXml || (dgml.nodeXml = {}));
 })(dgml || (dgml = {}));

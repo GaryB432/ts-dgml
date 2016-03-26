@@ -1,5 +1,5 @@
 /// <reference path="typings/tsd.d.ts" />
-declare module dgml {
+declare namespace dgml {
     class LabeledElement {
         id: string;
         label: string;
@@ -45,7 +45,7 @@ declare module dgml {
         constructor(graph: DirectedGraph, toXml: () => string);
         toDgml(): string;
     }
-    module nodeXml {
+    namespace nodeXml {
         interface INodeXmlObject {
             DirectedGraph: any[];
         }
