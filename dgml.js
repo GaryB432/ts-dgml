@@ -62,8 +62,8 @@ var dgml;
             this.categories = [];
             this.styles = [];
         }
-        DirectedGraph.prototype.addExternalNodes = function (category, cb) {
-            var targets = {}, nodeMap = {}, cat = new Category(category);
+        DirectedGraph.prototype.addExternalNodes = function (catId, cb) {
+            var targets = {}, nodeMap = {}, cat = this.mergeCategory(catId);
             this.nodes.forEach(function (n) {
                 nodeMap[n.id] = n;
             });
@@ -81,7 +81,17 @@ var dgml;
                     }
                 }
             }
-            this.categories.push(cat);
+        };
+        DirectedGraph.prototype.mergeCategory = function (id) {
+            var idCats = this.categories.filter(function (c) { return c.id === id; }), tempCat;
+            if (idCats.length === 0) {
+                tempCat = new Category(id);
+                this.categories.push(tempCat);
+            }
+            else {
+                tempCat = idCats[0];
+            }
+            return tempCat;
         };
         return DirectedGraph;
     }());

@@ -47,10 +47,10 @@ namespace dgml {
         public categories: Category[] = [];
         public styles: Style[] = [];
 
-        public addExternalNodes(category: string, cb?: (n: Node) => void): void {
+        public addExternalNodes(catId: string, cb?: (n: Node) => void): void {
             let targets: { [key: string]: Node } = {},
                 nodeMap: { [key: string]: Node } = {},
-                cat: Category = new Category(category);
+                cat: Category = this.mergeCategory(catId);
 
             this.nodes.forEach(n => {
                 nodeMap[n.id] = n;
@@ -69,7 +69,19 @@ namespace dgml {
                     }
                 }
             }
-            this.categories.push(cat);
+        }
+
+        private mergeCategory(id: string): Category {
+            let idCats = this.categories.filter((c) => c.id === id),
+                tempCat: Category;
+            if (idCats.length === 0) {
+                tempCat = new Category(id);
+                this.categories.push(tempCat)
+            }
+            else {
+                tempCat = idCats[0];
+            }
+            return tempCat;
         }
     }
 

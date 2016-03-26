@@ -83,7 +83,7 @@ describe('dgml serializer', function () {
                 + "</DirectedGraph>";
             chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
         });
-        it.skip('does not duplicate existing category', function () {
+        it('does not duplicate existing category', function () {
             graph.addExternalNodes("Appliances");
             var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                 + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"

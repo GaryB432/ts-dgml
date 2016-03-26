@@ -99,7 +99,7 @@ describe('dgml serializer', () => {
             chai.expect(new dgml.nodeXml.Serializer(graph).toDgml()).to.equal(expectedDgml);
         });
 
-        it.skip('does not duplicate existing category', () => {
+        it('does not duplicate existing category', () => {
             graph.addExternalNodes("Appliances");
 
             let expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"

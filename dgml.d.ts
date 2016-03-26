@@ -37,7 +37,8 @@ declare namespace dgml {
         links: Link[];
         categories: Category[];
         styles: Style[];
-        addExternalNodes(category: string, cb?: (n: Node) => void): void;
+        addExternalNodes(catId: string, cb?: (n: Node) => void): void;
+        private mergeCategory(id);
     }
     class ASerializer {
         protected graph: DirectedGraph;
