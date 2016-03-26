@@ -10,5 +10,6 @@ obj
 *.dat
 .travis.yml
 .gitattributes
+tsconfig.json
+tslint.json
 tsd.json
-
