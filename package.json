@@ -1,44 +1,45 @@
 {
-  "name": "ts-dgml",
-  "version": "3.0.2",
-  "description": "Directed Graph Markup Language",
-  "main": "dgml.js",
-  "scripts": {
-    "pretest": "tsc",
-    "test": "mocha --reporter spec"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/GaryB432/ts-dgml.git"
-  },
-  "keywords": [
-    "simple",
-    "dgml",
-    "builder",
-    "converter",
-    "typescript"
-  ],
-  "author": {
-    "name": "Gary Bortosky",
-    "url": "https://github.com/GaryB432"
-  },
-  "maintainers": [
-    {
-      "name": "Gary Bortosky",
-      "email": "gary@bortosky.com"
+    "name": "ts-dgml",
+    "version": "3.0.2",
+    "description": "Directed Graph Markup Language",
+    "main": "dgml.js",
+    "scripts": {
+        "lint": "tslint test\\dgml.test.ts dgml.ts",
+        "pretest": "tsc",
+        "test": "mocha --reporter spec"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/GaryB432/ts-dgml.git"
+    },
+    "keywords": [
+        "simple",
+        "dgml",
+        "builder",
+        "converter",
+        "typescript"
+    ],
+    "author": {
+        "name": "Gary Bortosky",
+        "url": "https://github.com/GaryB432"
+    },
+    "maintainers": [
+        {
+            "name": "Gary Bortosky",
+            "email": "gary@bortosky.com"
+        }
+    ],
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/GaryB432/ts-dgml/issues"
+    },
+    "homepage": "https://github.com/GaryB432/ts-dgml",
+    "devDependencies": {
+        "mocha": "^2.4.5",
+        "tslint": "^3.6.0",
+        "typescript": "^1.8.9"
+    },
+    "dependencies": {
+        "xml": "^1.0.1"
     }
-  ],
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/GaryB432/ts-dgml/issues"
-  },
-  "homepage": "https://github.com/GaryB432/ts-dgml",
-  "devDependencies": {
-    "mocha": "^2.4.5",
-    "tslint": "^3.6.0",
-    "typescript": "^1.8.9"
-  },
-  "dependencies": {
-    "xml": "^1.0.1"
-  }
 }

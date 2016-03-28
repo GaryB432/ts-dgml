@@ -1,8 +1,8 @@
 "use strict";
-var assert = require('assert');
-var dgml = require('../dgml');
-describe('dgml serializer', function () {
-    it('serializes properly', function () {
+var assert = require("assert");
+var dgml = require("../dgml");
+describe("dgml serializer", function () {
+    it("serializes properly", function () {
         var graph = new dgml.DirectedGraph();
         graph.nodes.push(new dgml.Node("H-3941", "heater"));
         graph.nodes.push(new dgml.Node("timer"));
@@ -35,7 +35,7 @@ describe('dgml serializer', function () {
             graph.links.push(new dgml.Link("coffee-maker", "timer"));
             graph.categories.push(new dgml.Category("Appliances"));
         });
-        it('with callback', function (done) {
+        it("with callback", function (done) {
             graph.links.push(new dgml.Link("other", "external_thing"));
             graph.addExternalNodes("external_stuff", function (newNode) {
                 assert.equal(newNode.id, "external_thing");
@@ -63,7 +63,7 @@ describe('dgml serializer', function () {
                 + "</DirectedGraph>";
             assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
         });
-        it('without callback', function () {
+        it("without callback", function () {
             graph.addExternalNodes("external_stuff");
             var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                 + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
@@ -83,7 +83,7 @@ describe('dgml serializer', function () {
                 + "</DirectedGraph>";
             assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
         });
-        it('does not duplicate existing category', function () {
+        it("does not duplicate existing category", function () {
             graph.addExternalNodes("Appliances");
             var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                 + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
@@ -103,7 +103,7 @@ describe('dgml serializer', function () {
             assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
         });
     });
-    it('includes categories', function () {
+    it("includes categories", function () {
         var graph = new dgml.DirectedGraph();
         graph.nodes.push(new dgml.Node("H-3941", "heater"));
         graph.nodes.push(new dgml.Node("timer"));
@@ -111,7 +111,6 @@ describe('dgml serializer', function () {
         graph.links.push(new dgml.Link("coffee-maker", "H-3941"));
         graph.links.push(new dgml.Link("coffee-maker", "timer"));
         graph.categories.push(new dgml.Category("Appliances"));
-        var ds = new dgml.nodeXml.Serializer(graph);
         var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
             + "<Nodes>"
@@ -129,10 +128,10 @@ describe('dgml serializer', function () {
             + "</DirectedGraph>";
         assert.equal(new dgml.nodeXml.Serializer(graph).toDgml(), expectedDgml);
     });
-    it('includes more props', function () {
+    it("includes more props", function () {
         var graph = new dgml.DirectedGraph();
         var heater = new dgml.Node("H-3941", "heater");
-        heater.moreProps = { Background: 'Red' };
+        heater.moreProps = { Background: "Red" };
         graph.nodes.push(heater);
         graph.nodes.push(new dgml.Node("timer"));
         graph.nodes.push(new dgml.Node("coffee-maker"));
@@ -153,16 +152,16 @@ describe('dgml serializer', function () {
             + "</DirectedGraph>";
         assert.equal(ds.toDgml(), expectedDgml);
     });
-    it('includes category props', function () {
+    it("includes category props", function () {
         var graph = new dgml.DirectedGraph();
         var heater = new dgml.Node("H-3941", "heater");
-        heater.moreProps = { Background: 'Red' };
+        heater.moreProps = { Background: "Red" };
         graph.nodes.push(heater);
         graph.nodes.push(new dgml.Node("timer"));
         graph.nodes.push(new dgml.Node("coffee-maker"));
         graph.links.push(new dgml.Link("coffee-maker", "H-3941"));
         graph.links.push(new dgml.Link("coffee-maker", "timer"));
-        var electronics = new dgml.Category("c1", "Electronic", { Fun: 'True', NonStringIgnored: true, Tests: 'OK' });
+        var electronics = new dgml.Category("c1", "Electronic", { Fun: "True", NonStringIgnored: true, Tests: "OK" });
         heater.category = electronics.id;
         graph.categories.push(electronics);
         var ds = new dgml.nodeXml.Serializer(graph);
@@ -183,19 +182,19 @@ describe('dgml serializer', function () {
             + "</DirectedGraph>";
         assert.equal(ds.toDgml(), expectedDgml);
     });
-    it('includes styles', function () {
+    it("includes styles", function () {
         var graph = new dgml.DirectedGraph();
         var heater = new dgml.Node("H-3941", "heater");
-        heater.moreProps = { Background: 'Red' };
+        heater.moreProps = { Background: "Red" };
         graph.nodes.push(heater);
         graph.nodes.push(new dgml.Node("timer"));
         graph.nodes.push(new dgml.Node("coffee-maker"));
         graph.links.push(new dgml.Link("coffee-maker", "H-3941"));
         graph.links.push(new dgml.Link("coffee-maker", "timer"));
-        var electronics = new dgml.Category("c1", "Electronic", { Fun: 'True', NonStringIgnored: true, Tests: 'OK' });
+        var electronics = new dgml.Category("c1", "Electronic", { Fun: "True", NonStringIgnored: true, Tests: "OK" });
         heater.category = electronics.id;
         graph.categories.push(electronics);
-        graph.styles.push(new dgml.Style('Node', 'Wires', 'True', "HasCategory('c1')", [{ name: "Background", value: "Blue" }]));
+        graph.styles.push(new dgml.Style("Node", "Wires", "True", "HasCategory('c1')", [{ name: "Background", value: "Blue" }]));
         var ds = new dgml.nodeXml.Serializer(graph);
         var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
@@ -220,14 +219,14 @@ describe('dgml serializer', function () {
             + "</DirectedGraph>";
         assert.equal(ds.toDgml(), expectedDgml);
     });
-    it('includes styles no categories', function () {
+    it("includes styles no categories", function () {
         var graph = new dgml.DirectedGraph();
         graph.nodes.push(new dgml.Node("H-3941", "heater"));
         graph.nodes.push(new dgml.Node("timer"));
         graph.nodes.push(new dgml.Node("coffee-maker"));
         graph.links.push(new dgml.Link("coffee-maker", "H-3941"));
         graph.links.push(new dgml.Link("coffee-maker", "timer"));
-        graph.styles.push(new dgml.Style('Node', 'Wires', 'True', "HasCategory('c1')", [{ name: "Background", value: "Blue" }]));
+        graph.styles.push(new dgml.Style("Node", "Wires", "True", "HasCategory('c1')", [{ name: "Background", value: "Blue" }]));
         var ds = new dgml.nodeXml.Serializer(graph);
         var expectedDgml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<DirectedGraph xmlns=\"http://schemas.microsoft.com/vs/2009/dgml\">"
